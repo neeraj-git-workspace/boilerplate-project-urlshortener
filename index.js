@@ -50,8 +50,19 @@ app.post('/api/shorturl', (req, res) => {
     original_url: url,
     short_url: shortUrls[foundIndex]
   })
+})
 
-  res.json(req.body.url);
+app.get('/api/shorturl/:shorturl', (req, res) => {
+  const shorturl = parseInt(req.params.shorturl)
+  const foundIndex = shortUrls.indexOf(shorturl)
+
+  if(foundIndex < 0){
+    return res.json({
+      "error": "No short URL found for the given input"
+    })
+  }
+
+  res.redirect(originalUrls[foundIndex])
 })
 
 app.listen(port, function() {
